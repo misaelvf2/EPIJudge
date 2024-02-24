@@ -9,43 +9,41 @@ RED, WHITE, BLUE = range(3)
 
 
 def dutch_flag_partition(pivot_index: int, A: List[int]) -> None:
+    # Two-pass solution based on loop invariants.
+    # Partition the array into three regions:
+    # lower - for elements less than the pivot
+    # greater - for elements greater than the pivot
+    # unclassified - for elements yet to be classified in one region or the other.
+    # The first pass populates the lower and greater regions;
+    # the second pass populates a new equal region
+    # in between the lower and greater regions.
+    # You have to pay special attention to how the loop invariant
+    # is initialized and maintained.
     # Time: O(n)
-    # Space: O(n)
-    # Determine partition sizes to determine where elements
-    # will end up at in the final array
-    # Use temporary array to simplify insertion logic
-    # at cost of extra space utilization
-    lower_count, equal_count, _ = partition_sizes(pivot_index, A)
-    lower = 0
-    equal = lower_count
-    greater = lower_count + equal_count
+    # Space: O(1)
+    pivot = A[pivot_index]
+    lower, greater = -1, len(A)
 
-    result = [0] * len(A)
-    for num in A:
-        if num < A[pivot_index]:
-            result[lower] = num
+    i = 0
+    while i < greater:
+        if A[i] < pivot:
             lower += 1
-        elif num == A[pivot_index]:
-            result[equal] = num
-            equal += 1
+            A[lower], A[i] = A[i], A[lower]
+            i += 1
+        elif A[i] > pivot:
+            # Notice how i isn't incremented in this case.
+            # Doing so would erroneously take the swapped element
+            # at A[greater] outside the unclassified region.
+            greater -= 1
+            A[greater], A[i] = A[i], A[greater]
         else:
-            result[greater] = num
-            greater += 1
-
-    for i, num in enumerate(result):
-        A[i] = num
-
-
-def partition_sizes(pivot_index: int, A: List[int]) -> tuple[int, int, int]:
-    lower = equal = greater = 0
-    for num in A:
-        if num < A[pivot_index]:
-            lower += 1
-        elif num == A[pivot_index]:
-            equal += 1
-        else:
-            greater += 1
-    return (lower, equal, greater)
+            i += 1
+    # At this point, we know the equal region is bounded
+    # by lower < i < greater
+    i = lower + 1
+    while i < greater:
+        A[i] = pivot
+        i += 1
 
 
 @enable_executor_hook
