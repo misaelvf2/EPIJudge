@@ -9,41 +9,36 @@ RED, WHITE, BLUE = range(3)
 
 
 def dutch_flag_partition(pivot_index: int, A: List[int]) -> None:
-    # Two-pass solution based on loop invariants.
-    # Partition the array into three regions:
+    # One-pass solution based on loop invariants.
+    # Partition the array into four regions:
     # lower - for elements less than the pivot
+    # equal - for elements equal to the pivot
     # greater - for elements greater than the pivot
-    # unclassified - for elements yet to be classified in one region or the other.
-    # The first pass populates the lower and greater regions;
-    # the second pass populates a new equal region
-    # in between the lower and greater regions.
-    # You have to pay special attention to how the loop invariant
+    # unclassified - for elements yet to be classified
+    # You have to pay *VERY* close attention to how the loop invariant
     # is initialized and maintained.
     # Time: O(n)
     # Space: O(1)
     pivot = A[pivot_index]
+    # Notice how we don't have an explicit pointer for the equal region.
+    # That's because the iterator implicitly tracks the equal region.
     lower, greater = -1, len(A)
 
     i = 0
     while i < greater:
         if A[i] < pivot:
             lower += 1
-            A[lower], A[i] = A[i], A[lower]
+            A[i], A[lower] = A[lower], A[i]
+            # Key insight: as the lower region grows,
+            # the equal region must also shift to the right.
             i += 1
-        elif A[i] > pivot:
-            # Notice how i isn't incremented in this case.
-            # Doing so would erroneously take the swapped element
-            # at A[greater] outside the unclassified region.
-            greater -= 1
-            A[greater], A[i] = A[i], A[greater]
+        elif A[i] == pivot:
+            i += 1
         else:
-            i += 1
-    # At this point, we know the equal region is bounded
-    # by lower < i < greater
-    i = lower + 1
-    while i < greater:
-        A[i] = pivot
-        i += 1
+            # *DON'T* increment i!
+            # Doing so would erroneously grow the equal region.
+            greater -= 1
+            A[i], A[greater] = A[greater], A[i]
 
 
 @enable_executor_hook
