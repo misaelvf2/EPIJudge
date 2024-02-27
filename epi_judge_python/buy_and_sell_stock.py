@@ -18,6 +18,21 @@ def buy_and_sell_stock_once(prices: List[float]) -> float:
     return result
 
 
+def buy_and_sell_stock_once_only_sell_at_max(prices: List[int]) -> float:
+    # For each buying price, only sell at the maximum possible price.
+    # In other words, for each index i, find the maximum price in the subarray starting at index i + 1.
+    # Unfortunately, finding the max requires linear time, and we do this for every element. Thus, it is
+    # as inefficient as the complete search approach.
+    # Time: O(n^2)
+    # Space: O(1)
+    result = 0.0
+
+    for i in range(len(prices) - 1):
+        result = max(result, max(prices[i + 1 :]) - prices[i])
+
+    return result
+
+
 if __name__ == "__main__":
     exit(
         generic_test.generic_test_main(
