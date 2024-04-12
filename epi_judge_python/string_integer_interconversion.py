@@ -16,7 +16,7 @@ def int_to_string(x: int) -> str:
         return "0"
 
     result = []
-    parity = "-" if x < 0 else ""
+    polarity = "-" if x < 0 else ""
 
     # We do this because the mod 10 trick doesn't work for negative ints.
     x = abs(x)
@@ -33,7 +33,7 @@ def int_to_string(x: int) -> str:
         # This shifts the integer to the right by one.
         x //= 10
 
-    return parity + "".join(reversed(result))
+    return polarity + "".join(reversed(result))
 
 
 def string_to_int(s: str) -> int:
@@ -47,13 +47,13 @@ def string_to_int(s: str) -> int:
     result = 0
 
     if s[0] == "-":
-        parity = -1
+        polarity = -1
         s = s[1:]
     elif s[0] == "+":
-        parity = 1
+        polarity = 1
         s = s[1:]
     else:
-        parity = 1
+        polarity = 1
 
     i = 0
     while i < len(s):
@@ -64,7 +64,7 @@ def string_to_int(s: str) -> int:
         result += digit
         i += 1
 
-    return parity * result
+    return polarity * result
 
 
 def wrapper(x, s):
