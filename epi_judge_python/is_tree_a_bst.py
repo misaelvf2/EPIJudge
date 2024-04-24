@@ -10,31 +10,32 @@ Result = namedtuple("Result", ["is_bst", "minimum", "maximum"])
 BFSNode = namedtuple("BFSNode", ["node", "low", "high"])
 
 
+# def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
+#     # Same as below, but performs the inorder traversal
+#     # iteratively.
+#     stack = []
+#     current = tree
+#     last = -math.inf
+
+#     while current or stack:
+#         # Go as far to the left as possible
+#         while current:
+#             stack.append(current)
+#             current = current.left
+#         # Reached end of branch
+#         current = stack.pop()
+#         # Check whether current node satisfies BST condition
+#         if current.data < last:
+#             return False
+#         last = current.data
+#         # Now go right
+#         current = current.right
+
+#     return True
+
+
+# def is_binary_tree_bst_inorder_sort(tree: BinaryTreeNode) -> bool:
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
-    # Same as below, but performs the inorder traversal
-    # iteratively.
-    stack = []
-    current = tree
-    last = -math.inf
-
-    while current or stack:
-        # Go as far to the left as possible
-        while current:
-            stack.append(current)
-            current = current.left
-        # Reached end of branch
-        current = stack.pop()
-        # Check whether current node satisfies BST condition
-        if current.data < last:
-            return False
-        last = current.data
-        # Now go right
-        current = current.right
-
-    return True
-
-
-def is_binary_tree_bst_inorder_sort(tree: BinaryTreeNode) -> bool:
     # Perform an inorder traversal on the binary tree.
     # By definition, an inorder traversal on a BST
     # should yield all nodes in the BST in sorted order.
@@ -42,23 +43,24 @@ def is_binary_tree_bst_inorder_sort(tree: BinaryTreeNode) -> bool:
     # there is an out-or-order element, return False.
     # Time: O(n)
     # Space: O(n)
-    def inorder_dfs(node: BinaryTreeNode, elems: list[int]) -> bool:
+    elems = []
+    def inorder_dfs(node: BinaryTreeNode) -> bool:
         # Base condition: reached end of branch
         if node is None:
             return True
-        left = inorder_dfs(node.left, elems)
+        left = inorder_dfs(node.left)
         if not left:
             return False
         # Check that BST condition holds
         if len(elems) > 0 and node.data < elems[-1]:
             return False
         elems.append(node.data)
-        right = inorder_dfs(node.right, elems)
+        right = inorder_dfs(node.right)
         if not right:
             return False
         return True
 
-    return inorder_dfs(tree, [])
+    return inorder_dfs(tree)
 
 
 def is_binary_tree_bst_bfs(tree: BinaryTreeNode) -> bool:
