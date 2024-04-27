@@ -69,7 +69,7 @@ def compute_tower_hanoi(num_rings: int) -> List[List[int]]:
     # because then the bottom ring would be put on top of the smaller rings.
     # The correct framing is this: to move n rings from a source peg to a target peg,
     # first move the top n - 1 rings to the spare peg. Then, move the nth ring
-    # (i.e., the smallest ring) to the target peg. Then, move the top n - 1 rings
+    # (i.e., the largest ring) to the target peg. Then, move the top n - 1 rings
     # from the spare peg to the target peg.
     # Recurrence relation:
     # T(n) = 1, n = 1
