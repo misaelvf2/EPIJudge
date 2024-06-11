@@ -38,7 +38,7 @@ def num_combinations_for_final_score(
 ) -> int:
     # Bottom-up dynamic programming approach.
     # We fill in a 2D table, where the rows represent
-    # the end index int othe individual_play_scores list, and
+    # the end index in to the individual_play_scores list, and
     # the columns represent scores from i = 0, 1, ..., final_score.
     # We first initialize the 0 column with the value 1, representing
     # the fact that there is only one way values from individual_play_scores
@@ -48,7 +48,7 @@ def num_combinations_for_final_score(
     #         = T(n - S[i], i) + T(n, i - 1), if n > 0
     # The tricky part is keeping the row and columns straight (i.e., in this implementation,
     # the rows and columns are inverted relative to the order suggested by the recurrence relation).
-    # Also, in contrast to the bottom-up approach, we think of the index as being the "end index"
+    # Also, in contrast to the top-down approach, we think of the index as being the "end index"
     # rather than the "start index", that way the values are in ascending order.
     # Time: O(s * k), where s is the final score, and k is the length of individual_play_scores.
     # Space: O(s * k)
